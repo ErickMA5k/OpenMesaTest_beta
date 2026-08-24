@@ -77,11 +77,21 @@
         }
     }
 
-    function fecharScanner() {
-        if (html5QrCode) html5QrCode.stop().then(() => html5QrCode.clear()).catch(()=>{});
-        mudarTelaBase('tela_inicial');
+     function fecharScanner() {
+    mudarTelaBase('tela_inicial');
+    if (html5QrCode) {
+        try {
+            html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+            }).catch((err) => {
+                console.warn("Câmera não foi iniciada", err);
+            });
+        } catch (e) {
+            console.warn("Erro ao tentar fechar scanner:", e);
+        }
     }
-
+}
+   
     function confirmarScanner() {
         if (qtdScanMarmita === 0 && qtdScanRefeicao === 0) return alert("Nenhum código lido.");
         // Salva as leituras diretamente no banco de dados do dia de HOJE
